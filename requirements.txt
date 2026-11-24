@@ -1,0 +1,11 @@
+numpy>=1.24
+pandas>=2.0
+scipy>=1.10
+scikit-learn>=1.3
+matplotlib>=3.7
+seaborn>=0.12
+kagglehub>=0.2      # only needed to download the dataset
+pytest>=7.0         # only needed to run the tests
+optuna>=3.0         # optional: Bayesian optimisation (a built-in fallback is used if absent)
+xgboost>=1.7        # optional: only for the SHAP section
+shap>=0.42          # optional: only for the SHAP section

@@ -1,0 +1,11 @@
+term,odds_ratio
+Smoking Status x Employment Status_Current | Unemployed,0.8234836909298457
+Smoking Status x Employment Status_Non-smoker | Employed,0.826516823550669
+Smoking Status x Employment Status_Former | Employed,0.8304026022247739
+Smoking Status x Employment Status_Non-smoker | Unemployed,1.1632755911250197
+Smoking Status x Employment Status_Former | Unemployed,1.1603953940044818
+Education Level x Employment Status_Master's Degree | Employed,0.8437212893776691
+Education Level x Employment Status_Bachelor's Degree | Employed,0.8475815623489927
+Education Level x Employment Status_PhD | Employed,0.8522132599036277
+Education Level x Smoking Status_High School | Current,0.856922884048967
+Smoking Status x Employment Status_Current | Employed,1.1315081976850456

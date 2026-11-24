@@ -1,0 +1,15 @@
+feature,type,largest_gap,unit
+Log Income,numeric,1.3997129005435407,% of a standard deviation (mean)
+Age,numeric,0.7674335152595188,% of a standard deviation (mean)
+Smoking Status,category,0.5776957022719742,points of category share
+Family History of Depression,category,0.4664427097179624,points of category share
+Alcohol Consumption,category,0.4444216810752133,points of category share
+Sleep Patterns,category,0.4372721401996654,points of category share
+Employment Status,category,0.38496350385229805,points of category share
+Physical Activity Level,category,0.3676989288471655,points of category share
+History of Substance Abuse,category,0.34535247016798665,points of category share
+Education Level,category,0.31764938772415596,points of category share
+Number of Children,numeric,0.2873109782788263,% of a standard deviation (mean)
+Dietary Habits,category,0.19817773159001018,points of category share
+Chronic Medical Conditions,category,0.14003733719972766,points of category share
+Marital Status,category,0.11479807622592209,points of category share

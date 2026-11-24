@@ -1,0 +1,6 @@
+model,val_auc
+Additive only (depth 1),0.5952527608706153
+Up to 2-way (depth 2),0.599288359333392
+Up to 3-way (depth 3),0.5993130876854204
+Tuned (depth 8),0.598956342376368
+"Logistic regression (additive, for reference)",0.5965269627480801

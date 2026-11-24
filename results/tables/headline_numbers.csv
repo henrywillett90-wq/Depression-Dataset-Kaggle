@@ -1,0 +1,10 @@
+Item,Value
+Rows analysed,"413,768"
+Positive rate (history of mental illness),30.4%
+Strongest predictor (effect size),"Log Income (0.186, weak)"
+Final model,Logistic regression (chosen on validation data over Gradient boosting (HGB) and a majority baseline)
+Test ROC-AUC (95% CI),"0.593 [0.589, 0.597]"
+Test PR-AUC vs prevalence,0.362 vs 0.304
+Recall / precision at operating threshold (top-30% rule),39% / 39%
+Top-decile lift,1.24x
+Worst disparate-impact ratio / largest TPR gap,0.00 / 0.919

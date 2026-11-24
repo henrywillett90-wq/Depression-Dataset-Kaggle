@@ -1,0 +1,49 @@
+              rows  share_with_history
+train       248260            0.304097
+validation   82754            0.304094
+test         82754            0.304094
+                                           model   val_auc
+0                        Additive only (depth 1)  0.595253
+1                          Up to 2-way (depth 2)  0.599288
+2                          Up to 3-way (depth 3)  0.599313
+3                                Tuned (depth 8)  0.598956
+4  Logistic regression (additive, for reference)  0.596527
+Up to 2-way (depth 2)  minus  Additive only (depth 1):  +0.0040   95% CI [+0.0028, +0.0053]
+Up to 3-way (depth 3)  minus  Up to 2-way (depth 2):  +0.0000   95% CI [-0.0012, +0.0012]
+                                     pair  strength        h2
+0   Education Level  x  Employment Status  0.077572  0.078402
+1    Smoking Status  x  Employment Status  0.070034  0.081969
+2      Education Level  x  Smoking Status  0.036791  0.073035
+3           Log Income  x  Smoking Status  0.030852  0.175407
+4          Log Income  x  Education Level  0.026890  0.023562
+5                 Age  x  Education Level  0.024407  0.037670
+6        Log Income  x  Employment Status  0.020810  0.005267
+7                      Age  x  Log Income  0.017802  0.063081
+8           Log Income  x  Dietary Habits  0.009042  0.017255
+9  Log Income  x  Physical Activity Level  0.008372  0.014479
+   pairs added (K)                                                                                                                                                                                        added   val_auc
+0                0                                                                                                                                                                                            -  0.596519
+1                1                                                                                                                                                          Education Level x Employment Status  0.595136
+2                2                                                                                                                      Education Level x Employment Status, Smoking Status x Employment Status  0.599470
+3                3                                                                                    Education Level x Employment Status, Smoking Status x Employment Status, Education Level x Smoking Status  0.600414
+4                4                                                       Education Level x Employment Status, Smoking Status x Employment Status, Education Level x Smoking Status, Log Income x Smoking Status  0.599978
+5                5                         Education Level x Employment Status, Smoking Status x Employment Status, Education Level x Smoking Status, Log Income x Smoking Status, Log Income x Education Level  0.600750
+6                6  Education Level x Employment Status, Smoking Status x Employment Status, Education Level x Smoking Status, Log Income x Smoking Status, Log Income x Education Level, Age x Education Level  0.600878
+Chosen K = 3
+                                    model   val_auc  test_auc
+0          Logistic regression (additive)  0.596527  0.592703
+1  Logistic regression + 3 interaction(s)  0.600414  0.597052
+2               Gradient boosting (tuned)  0.598956  0.597016
+Test AUC, interaction logistic minus additive logistic: +0.0043  95% CI [+0.0028, +0.0059]
+Test AUC, gradient boosting minus interaction logistic: +0.0000  95% CI [-0.0017, +0.0019]
+                                                                term  odds_ratio
+46           Smoking Status x Employment Status_Current | Unemployed    0.823484
+49          Smoking Status x Employment Status_Non-smoker | Employed    0.826517
+47              Smoking Status x Employment Status_Former | Employed    0.830403
+50        Smoking Status x Employment Status_Non-smoker | Unemployed    1.163276
+48            Smoking Status x Employment Status_Former | Unemployed    1.160395
+41    Education Level x Employment Status_Master's Degree | Employed    0.843721
+37  Education Level x Employment Status_Bachelor's Degree | Employed    0.847582
+43                Education Level x Employment Status_PhD | Employed    0.852213
+57            Education Level x Smoking Status_High School | Current    0.856923
+45             Smoking Status x Employment Status_Current | Employed    1.131508

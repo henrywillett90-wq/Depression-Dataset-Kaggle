@@ -1,0 +1,8 @@
+model,test_auc
+"Logistic, 3 variables, additive",0.592409123211417
+"Logistic, 3 variables + 3 pairwise interactions",0.5969055507332344
+"Logistic, 3 variables + full 3-way combination",0.5971560580406859
+"Three-tier rule (lookup of training rates, no model)",0.5974118888751041
+"Logistic, all 14 variables, additive",0.5927034152343754
+"Logistic, all 14 + interactions (recommended)",0.5970520826242988
+"Gradient boosting, all 14",0.5971131686299411

@@ -1,0 +1,532 @@
+Loading: depression_data.csv
+Raw shape: (413768, 16)
+                                dtype  missing  n_unique
+Name                              str        0    196851
+Age                             int64        0        63
+Number of Children              int64        0         5
+Income                        float64        0    405282
+Marital Status                    str        0         4
+Education Level                   str        0         5
+Smoking Status                    str        0         3
+Physical Activity Level           str        0         3
+Employment Status                 str        0         2
+Alcohol Consumption               str        0         3
+Dietary Habits                    str        0         3
+Sleep Patterns                    str        0         3
+History of Substance Abuse        str        0         2
+Family History of Depression      str        0         2
+Chronic Medical Conditions        str        0         2
+History of Mental Illness         str        0         2
+
+Rows: 413,768 | exact duplicate rows: 0 | duplicate names: 216,917 of 413,768
+
+Numeric summary:
+                       count          mean           std    min       25%        50%      75%        max
+Age                 413768.0     49.000713     18.158759  18.00     33.00     49.000     65.0      80.00
+Number of Children  413768.0      1.298972      1.237054   0.00      0.00      1.000      2.0       4.00
+Income              413768.0  50661.707971  40624.100565   0.41  21001.03  37520.135  76616.3  209995.22
+
+Marital Status: Married (58.1%), Single (17.4%), Widowed (16.6%), Divorced (7.9%)
+
+Education Level: Bachelor's Degree (30.0%), High School (28.7%), Associate Degree (19.3%), Master's Degree (17.8%), PhD (4.0%)
+
+Smoking Status: Non-smoker (59.8%), Former (28.1%), Current (12.1%)
+
+Physical Activity Level: Sedentary (42.7%), Moderate (38.2%), Active (19.1%)
+
+Employment Status: Employed (64.2%), Unemployed (35.8%)
+
+Alcohol Consumption: Moderate (41.9%), Low (33.7%), High (24.4%)
+
+Dietary Habits: Unhealthy (41.3%), Moderate (41.2%), Healthy (17.5%)
+
+Sleep Patterns: Fair (47.6%), Poor (31.3%), Good (21.1%)
+
+History of Substance Abuse: No (68.9%), Yes (31.1%)
+
+Family History of Depression: No (73.1%), Yes (26.9%)
+
+Chronic Medical Conditions: No (67.1%), Yes (32.9%)
+
+Target prevalence ('History of Mental Illness' = Yes): 30.4%  ->  imbalance ratio 2.29 : 1 (negative : positive)
+Data ready: (413768, 20)
+                         feature         type  effect_size    strength   p_bonferroni                                                                  direction
+0                     Log Income      numeric     0.185914        weak   0.000000e+00                                                  lower in 'Yes' (r=-0.186)
+1              Employment Status  categorical     0.140764        weak   0.000000e+00                 highest rate: Unemployed (39.1%); lowest: Employed (25.6%)
+2                Education Level  categorical     0.058176   very weak  7.950563e-301  highest rate: Associate Degree (33.3%); lowest: Bachelor's Degree (27.7%)
+3                 Sleep Patterns  categorical     0.037815  negligible  4.626567e-128                           highest rate: Poor (32.4%); lowest: Good (27.5%)
+4                            Age      numeric     0.030996  negligible   1.070570e-55                                                 higher in 'Yes' (r=+0.031)
+5                 Dietary Habits  categorical     0.029591  negligible   2.973962e-78                   highest rate: Unhealthy (31.4%); lowest: Healthy (27.6%)
+6            Alcohol Consumption  categorical     0.013579  negligible   3.797458e-16                       highest rate: High (31.5%); lowest: Moderate (30.0%)
+7                 Marital Status  categorical     0.012519  negligible   7.572645e-13                    highest rate: Widowed (31.4%); lowest: Divorced (29.4%)
+8        Physical Activity Level  categorical     0.008566  negligible   3.578759e-06                    highest rate: Sedentary (30.8%); lowest: Active (29.8%)
+9     Chronic Medical Conditions  categorical     0.006038  negligible   1.439459e-03                              highest rate: Yes (30.8%); lowest: No (30.2%)
+10                Smoking Status  categorical     0.005259  negligible   4.582220e-02                  highest rate: Non-smoker (30.6%); lowest: Current (29.9%)
+11  Family History of Depression  categorical     0.004887  negligible   2.335001e-02                              highest rate: Yes (30.8%); lowest: No (30.3%)
+12            Number of Children      numeric     0.004459  negligible   2.439823e-01                                                 higher in 'Yes' (r=+0.004)
+13    History of Substance Abuse  categorical     0.001733  negligible   1.000000e+00                              highest rate: Yes (30.5%); lowest: No (30.4%)
+Largest absolute predictor-predictor correlation: ('Log Income', 'Employment Status') = 0.81
+==============================================================================================================
+EDA TAKEAWAYS (generated from the data)
+==============================================================================================================
+1. Class balance: 30.4% of people have a history of mental illness (imbalance 2.3:1). A model that always says
+'No' would score 69.6% accuracy, so accuracy alone is a misleading metric here; I use ROC-AUC, PR-AUC,
+calibration and threshold-based precision/recall instead.
+2. Predictors with at least a 'very weak' association (effect size >= 0.05): Log Income (weak, 0.19);
+Employment Status (weak, 0.14); Education Level (very weak, 0.06).
+   - Log Income: effect size 0.186 (weak); lower in 'Yes' (r=-0.186).
+   - Employment Status: effect size 0.141 (weak); highest rate: Unemployed (39.1%); lowest: Employed (25.6%).
+   - Education Level: effect size 0.058 (very weak); highest rate: Associate Degree (33.3%); lowest:
+Bachelor's Degree (27.7%).
+   - Sleep Patterns: effect size 0.038 (negligible); highest rate: Poor (32.4%); lowest: Good (27.5%).
+3. Largest predictor-predictor correlation is 0.81, so multicollinearity is something to watch for the linear
+model.
+4. Data quality: 0 exact duplicate rows, 0 missing cells. 'Name' is an identifier (196,851 distinct values)
+and carries no legitimate predictive information.
+                         feature                  decision                                                                               rationale  effect_size    strength   mutual_info
+0                           Name                   Exclude       Identifier: no causal meaning, privacy risk, enables memorisation of individuals.          NaN         NaN           NaN
+1                         Income  Exclude (use Log Income)  Heavy right skew; log transform used instead, raw column dropped to avoid duplication.          NaN         NaN           NaN
+2                     Log Income                   Include   Socio-economic position; plausible link to mental health. Possible reverse causation.     0.185914        weak  1.430154e-02
+3                            Age       Include (sensitive)       Standard demographic risk factor. Protected characteristic: audited in Section 7.     0.030996  negligible  0.000000e+00
+4                 Marital Status       Include (sensitive)                   Social-support proxy. Protected characteristic: audited in Section 7.     0.012519  negligible  7.948851e-05
+5             Number of Children                   Include                                              Household / caring responsibility context.     0.004459  negligible  1.084260e-04
+6                Education Level                   Include                                                        Socio-economic context; ordinal.     0.058176   very weak  1.791306e-03
+7              Employment Status                   Include                          Plausibly linked to mental health; possible reverse causation.     0.140764        weak  9.838558e-03
+8                 Smoking Status                   Include                       Lifestyle marker associated with mental health in the literature.     0.005259  negligible  1.540609e-05
+9        Physical Activity Level                   Include                                                              Lifestyle marker; ordinal.     0.008566  negligible  9.053606e-06
+10           Alcohol Consumption                   Include                                                              Lifestyle marker; ordinal.     0.013579  negligible  1.237844e-04
+11                Dietary Habits                   Include                                                              Lifestyle marker; ordinal.     0.029591  negligible  4.506234e-04
+12                Sleep Patterns                   Include                 Sleep and mental health are closely linked; possible reverse causation.     0.037815  negligible  5.815190e-04
+13    History of Substance Abuse                   Include                  Co-occurring condition; may be a consequence as well as a risk factor.     0.001733  negligible  6.898136e-09
+14  Family History of Depression                   Include                                                                Established risk factor.     0.004887  negligible  2.270027e-05
+15    Chronic Medical Conditions                   Include                                    Comorbidity; associated with mental health outcomes.     0.006038  negligible  1.564565e-05
+Data-driven note: these kept variables show negligible univariate association (< 0.05): Sleep Patterns, Age,
+Dietary Habits, Alcohol Consumption, Marital Status, Physical Activity Level, Chronic Medical Conditions,
+Smoking Status, Family History of Depression, Number of Children, History of Substance Abuse. They are
+retained for the main model, and a production version should test dropping them.
+train 248,260 | validation 82,754 | test 82,754 | positive rate 0.304 / 0.304 / 0.304
+Optimiser: Gaussian process + expected improvement. 25 gradient-boosting trials and 12 logistic trials, 5-fold CV on 100,000 training rows.
+Chosen HGB parameters: {'learning_rate': 0.0357, 'max_depth': 8, 'max_leaf_nodes': 49, 'min_samples_leaf': 307, 'l2_regularization': 0.0042} -> CV AUC 0.6006 (sd 0.0059)
+Chosen logistic C: 0.05307 -> CV AUC 0.5957
+25 of 25 gradient-boosting trials are within one fold-sd of the best, so many settings are equivalent; the exact choice matters little.
+    learning_rate  max_depth  max_leaf_nodes  min_samples_leaf  l2_regularization    cv_auc     cv_sd
+0        0.035747          8              49               307           0.004208  0.600554  0.005922
+14       0.093111          7              42               462           0.586660  0.600508  0.006398
+17       0.038401          8              46               311           0.001870  0.600394  0.005980
+22       0.062900          7              25               455           0.004268  0.600364  0.006819
+18       0.036119          7              13               335           0.186003  0.600289  0.006765
+21       0.020149          8              23               292           0.052035  0.600184  0.006428
+15       0.019620          7              50               188           0.006814  0.600170  0.006810
+2        0.010725          8              55               122           0.005337  0.600090  0.006059
+                     model  cv_auc_mean  cv_auc_std
+0      Logistic regression     0.597102    0.001693
+1  Gradient boosting (HGB)     0.600562    0.001606
+Validation AUC difference (HGB - logistic): +0.0017  95% CI [-0.0005, +0.0037]
+FINAL MODEL: Logistic regression: the interval does not show gradient boosting to be reliably better, so the simpler, more transparent model is chosen.
+Operating thresholds chosen on validation data: {'Logistic regression': '0.36 (top-30% rule)', 'Gradient boosting (HGB)': '0.38 (top-30% rule)'}
+Note: for at least one model the F1-optimal threshold would flag more than 60% of people, so the prevalence-
+matched rule was used instead. This usually happens when the model's signal is weak.
+TEST-SET PERFORMANCE (prevalence = 0.304, majority-class accuracy = 0.696)
+                     model            threshold   roc_auc    pr_auc     brier  log_loss  accuracy  balanced_acc  precision    recall        f1       mcc
+0         Baseline (prior)                 0.50  0.500000  0.304094  0.211621  0.614293  0.695906      0.500000   0.000000  0.000000  0.000000  0.000000
+1      Logistic regression                 0.50  0.592703  0.362230  0.207178  0.603518  0.695906      0.500000   0.000000  0.000000  0.000000  0.000000
+2      Logistic regression  0.36 (top-30% rule)  0.592703  0.362230  0.207178  0.603518  0.626169      0.559390   0.386160  0.388953  0.387551  0.118540
+3  Gradient boosting (HGB)                 0.50  0.597113  0.367697  0.205994  0.600739  0.695906      0.500000   0.000000  0.000000  0.000000  0.000000
+4  Gradient boosting (HGB)  0.38 (top-30% rule)  0.597113  0.367697  0.205994  0.600739  0.631945      0.566762   0.395991  0.400397  0.398182  0.133111
+Final model: Logistic regression
+  decile      rate     n      lift
+0      1  0.198647  8276  0.653241
+1      2  0.214381  8275  0.704981
+2      3  0.214985  8275  0.706968
+3      4  0.288183  8276  0.947676
+4      5  0.307795  8275  1.012169
+5      6  0.305378  8275  1.004221
+6      7  0.354157  8276  1.164628
+7      8  0.393837  8275  1.295115
+8      9  0.385498  8275  1.267695
+9     10  0.378081  8276  1.243303
+Shuffled-label control AUC on test: 0.505  (expected ~0.50)
+                         feature  single_var_val_auc
+0                     Log Income            0.593998
+1              Employment Status            0.572561
+2                Education Level            0.534181
+3                 Sleep Patterns            0.522226
+4                            Age            0.518070
+5                 Dietary Habits            0.516643
+6                 Marital Status            0.507123
+7             Number of Children            0.504240
+8        Physical Activity Level            0.504235
+9            Alcohol Consumption            0.503828
+10                Smoking Status            0.503621
+11  Family History of Depression            0.503133
+12    Chronic Medical Conditions            0.503031
+13    History of Substance Abuse            0.500535
+  contact_top_share  people_contacted  precision  share_of_all_positives_reached  lift_vs_random
+0                5%              4137   0.369108                        0.060680        1.213796
+1               10%              8275   0.378006                        0.124300        1.243056
+2               20%             16550   0.381813                        0.251103        1.255574
+3               30%             24826   0.385805                        0.380608        1.268704
+4               40%             33101   0.377874                        0.497040        1.242621
+5               50%             41377   0.363390                        0.597497        1.194993
+       rate      n  share_of_people                                                                                                   rule
+0  0.399941  81592         0.328655                                    Employment Status_Unemployed > 0.5 AND Smoking Status (rank) <= 1.5
+1  0.306826   7545         0.030392                                     Employment Status_Unemployed > 0.5 AND Smoking Status (rank) > 1.5
+2  0.299273  77070         0.310441                                  Employment Status_Unemployed <= 0.5 AND Education Level (rank) <= 1.5
+3  0.295562  10590         0.042657   Employment Status_Unemployed <= 0.5 AND Education Level (rank) > 1.5 AND Smoking Status (rank) > 1.5
+4  0.200845  71463         0.287855  Employment Status_Unemployed <= 0.5 AND Education Level (rank) > 1.5 AND Smoking Status (rank) <= 1.5
+Shallow tree (5 leaves): test ROC-AUC 0.5972  versus final model 0.5927
+Logistic regression: test ROC-AUC 0.5927  95% CI [0.5893, 0.5966]
+Logistic regression: test PR-AUC  0.3622  95% CI [0.3573, 0.3668]
+Gradient boosting (HGB): test ROC-AUC 0.5971  95% CI [0.5930, 0.6015]
+Test AUC difference (final - other) -0.0044  95% CI [-0.0066, -0.0023]
+                         feature  auc_drop        sd
+7              Employment Status  0.054715  0.003870
+4                Education Level  0.012358  0.001716
+5                 Smoking Status  0.002246  0.000278
+2                     Log Income  0.001664  0.000652
+11    History of Substance Abuse  0.000473  0.000200
+9                 Dietary Habits  0.000471  0.000508
+0                            Age  0.000332  0.000087
+10                Sleep Patterns  0.000257  0.000255
+12  Family History of Depression  0.000141  0.000557
+13    Chronic Medical Conditions  0.000123  0.000060
+1             Number of Children  0.000001  0.000030
+8            Alcohol Consumption -0.000021  0.000054
+6        Physical Activity Level -0.000206  0.000183
+3                 Marital Status -0.000286  0.000299
+   train_rows  train_auc   val_auc
+0       12413   0.606793  0.595221
+1       24826   0.599376  0.595420
+2       62065   0.599851  0.595306
+3      124130   0.596455  0.596529
+4      248260   0.597870  0.596527
+==============================================================================================================
+PERFORMANCE TAKEAWAYS (generated from the data)
+==============================================================================================================
+1. Final model: Logistic regression. Discrimination on the held-out test set: ROC-AUC 0.593 (poor; 95% CI
+0.589 to 0.597); PR-AUC 0.362 versus a no-skill reference of 0.304.
+2. Model choice: on validation data the AUC difference (HGB - logistic) was +0.0017 (95% CI -0.0005 to
++0.0037); the interval does not show gradient boosting to be reliably better, so the simpler, more transparent
+model is chosen.
+3. At the chosen operating point (top-30% rule, threshold 0.36) the model flags 31% of people, catches 39% of
+those with a history of mental illness (recall) with 39% precision (no-skill precision would be 30%). Accuracy
+is 62.6% versus 69.6% for always predicting 'No', which is why accuracy alone is not used.
+4. Lift: the top decile of scores has a rate 1.24x the average; the bottom decile 0.65x.
+5. Calibration: Brier score 0.207 (baseline 0.212); expected calibration error 0.025 (noticeable
+miscalibration: apply isotonic or Platt recalibration before using scores as probabilities).
+6. Most influential variables (permutation importance): Employment Status (0.0547); Education Level (0.0124);
+Smoking Status (0.0022).
+7. Learning curve: validation AUC moves from 0.595 (smallest sample) to 0.597 (all training data); train-
+validation gap at full size 0.001. The curve has flattened, so more rows of the same data are unlikely to
+help; better features would.
+8. Sanity checks: a model trained on shuffled labels scores AUC 0.505 (should be about 0.50), so there is no
+sign of leakage. Best single variable alone reaches validation AUC 0.594 (Log Income); performance is
+therefore carried by one or two variables.
+9. Structure: a 5-leaf decision tree reaches test AUC 0.597 against 0.593 for the final model, with group
+rates from 20.1% to 40.0% (table in Section 6.2). The signal is therefore a few simple groups, not a
+complicated function, and any gain of boosting over logistic regression comes from interactions between those
+variables.
+Overall: the model has limited predictive power. That is itself a finding: the available lifestyle and
+demographic variables contain little signal about this outcome, and the model should NOT be used to make
+individual-level decisions.
+                                model   val_auc
+0             Additive only (depth 1)  0.595257
+1  Up to 2-way interactions (depth 2)  0.599239
+2  Up to 3-way interactions (depth 3)  0.599298
+3           Tuned model (Section 5.2)  0.598267
+4      Logistic regression (additive)  0.596527
+Validation AUC gain from allowing interactions (tuned - additive): +0.0030  95% CI [+0.0009, +0.0049]
+=> interactions add reliable predictive signal, so it is worth finding them.
+                                     pair  strength        h2
+0   Education Level  x  Employment Status  0.079564  0.080090
+1    Smoking Status  x  Employment Status  0.070746  0.082315
+2      Education Level  x  Smoking Status  0.036933  0.072245
+3           Log Income  x  Smoking Status  0.028666  0.195666
+4          Log Income  x  Education Level  0.024899  0.021281
+5                 Age  x  Education Level  0.024062  0.035811
+6        Log Income  x  Employment Status  0.020592  0.005346
+7                      Age  x  Log Income  0.016465  0.069693
+8           Log Income  x  Dietary Habits  0.012103  0.039850
+9  Log Income  x  Physical Activity Level  0.008796  0.021059
+Read this as the size of the 'extra' effect of a pair beyond the sum of the two separate effects. For scale, the permutation importance table above shows how much each variable matters on its own.
+SHAP / XGBoost part skipped: ModuleNotFoundError("No module named 'xgboost'")
+To enable it: pip install xgboost shap   (then restart the kernel and re-run).
+   pairs added (K)                                                                                                                                                                                        added   val_auc
+0                0                                                                                                                                                                                            -  0.596527
+1                1                                                                                                                                                          Education Level x Employment Status  0.595175
+2                2                                                                                                                      Education Level x Employment Status, Smoking Status x Employment Status  0.599500
+3                3                                                                                    Education Level x Employment Status, Smoking Status x Employment Status, Education Level x Smoking Status  0.600436
+4                4                                                       Education Level x Employment Status, Smoking Status x Employment Status, Education Level x Smoking Status, Log Income x Smoking Status  0.599995
+5                5                         Education Level x Employment Status, Smoking Status x Employment Status, Education Level x Smoking Status, Log Income x Smoking Status, Log Income x Education Level  0.600755
+6                6  Education Level x Employment Status, Smoking Status x Employment Status, Education Level x Smoking Status, Log Income x Smoking Status, Log Income x Education Level, Age x Education Level  0.600887
+Chosen K = 3 (smallest number of interactions within 0.0005 of the best validation AUC).
+                                    model   val_auc  test_auc
+0          Logistic regression (additive)  0.596527  0.592703
+1  Logistic regression + 3 interaction(s)  0.600414  0.597052
+2                 Gradient boosting (HGB)  0.598267  0.597113
+Test AUC, interaction logistic minus additive logistic: +0.0043  95% CI [+0.0028, +0.0059]
+Test AUC, gradient boosting minus interaction logistic: +0.0001  95% CI [-0.0016, +0.0019]
+Largest interaction terms (odds ratio relative to the additive effects; >1 = higher risk than the separate effects suggest):
+                                                                term  odds_ratio
+46           Smoking Status x Employment Status_Current | Unemployed    0.823484
+49          Smoking Status x Employment Status_Non-smoker | Employed    0.826517
+47              Smoking Status x Employment Status_Former | Employed    0.830403
+50        Smoking Status x Employment Status_Non-smoker | Unemployed    1.163276
+48            Smoking Status x Employment Status_Former | Unemployed    1.160395
+41    Education Level x Employment Status_Master's Degree | Employed    0.843721
+37  Education Level x Employment Status_Bachelor's Degree | Employed    0.847582
+43                Education Level x Employment Status_PhD | Employed    0.852213
+57            Education Level x Smoking Status_High School | Current    0.856923
+45             Smoking Status x Employment Status_Current | Employed    1.131508
+                   interaction-aware logistic regression (test set)
+threshold                                                  0.388978
+rule                                                   top-30% rule
+roc_auc                                                    0.597052
+pr_auc                                                     0.367817
+brier                                                      0.205951
+ece                                                         0.00867
+accuracy                                                   0.632719
+precision                                                   0.39716
+recall                                                     0.401232
+flag_rate                                                  0.307212
+lift_top_decile                                            1.281449
+lift_bottom_decile                                         0.681055
+==============================================================================================================
+INTERACTION TAKEAWAYS (generated from the data)
+==============================================================================================================
+1. Do interactions matter? Validation AUC rises from 0.5953 (additive boosted trees) to 0.5983 (tuned), a gain
+of +0.0030 (95% CI +0.0009 to +0.0049). The gain is reliable but small: most of the signal is additive, with a
+modest interaction component on top.
+2. Strongest interaction (H-statistic): Education Level x Employment Status, size 0.080 log-odds; next:
+Smoking Status x Employment Status (0.071); Education Level x Smoking Status (0.037).
+3. SHAP was skipped because xgboost / shap are not installed (pip install xgboost shap).
+4. Feeding 3 discovered interaction(s) into the logistic regression moves test AUC from 0.5927 to 0.5971
+(boosting: 0.5971), recovering 99% of the gap to boosting while staying fully explainable.
+5. Recommendation: use the interaction-aware logistic regression: it keeps odds ratios that can be explained
+to non-technical audiences and regulators, and matches the boosted model closely.
+                                                  model  test_auc
+0                       Logistic, 3 variables, additive  0.592409
+1       Logistic, 3 variables + 3 pairwise interactions  0.596906
+2        Logistic, 3 variables + full 3-way combination  0.597156
+3  Three-tier rule (lookup of training rates, no model)  0.597412
+4                  Logistic, all 14 variables, additive  0.592703
+5         Logistic, all 14 + interactions (recommended)  0.597052
+6                             Gradient boosting, all 14  0.597113
+Additive logistic regression (C = 0.05307): odds ratio for every term, largest effects first.
+Numeric variables are standardised (odds ratio per 1 standard deviation). Category terms are one per level, so an odds ratio is that level's effect
+relative to the average over the other levels, shrunk by the L2 penalty. Not significance-tested: the model is regularised.
+                                   term  coefficient  odds_ratio
+0          Employment Status = Employed    -0.355878    0.700558
+1        Employment Status = Unemployed     0.204051    1.226360
+2   Education Level = Bachelor's Degree    -0.134099    0.874504
+3                 Education Level = PhD    -0.121667    0.885443
+4    Education Level = Associate Degree     0.115245    1.122149
+5     Education Level = Master's Degree    -0.108000    0.897627
+6         Education Level = High School     0.096693    1.101522
+7     Family History of Depression = No    -0.089180    0.914681
+8       History of Substance Abuse = No    -0.083633    0.919769
+9      Chronic Medical Conditions = Yes    -0.078282    0.924703
+10      Chronic Medical Conditions = No    -0.073545    0.929095
+11     History of Substance Abuse = Yes    -0.068194    0.934079
+12             Dietary Habits = Healthy    -0.067999    0.934262
+13          Smoking Status = Non-smoker    -0.066589    0.935580
+14   Physical Activity Level = Moderate    -0.064063    0.937946
+15              Smoking Status = Former    -0.062795    0.939136
+16   Family History of Depression = Yes    -0.062647    0.939275
+17                Sleep Patterns = Good    -0.059504    0.942231
+18            Marital Status = Divorced    -0.057771    0.943866
+19            Alcohol Consumption = Low    -0.053095    0.948289
+20                Sleep Patterns = Fair    -0.052960    0.948418
+21  Physical Activity Level = Sedentary    -0.051495    0.949808
+22           Alcohol Consumption = High    -0.050548    0.950708
+23                           Log Income    -0.049397    0.951803
+24             Marital Status = Widowed    -0.049039    0.952144
+25       Alcohol Consumption = Moderate    -0.048183    0.952959
+26            Dietary Habits = Moderate    -0.042916    0.957991
+27           Dietary Habits = Unhealthy    -0.040912    0.959914
+28                Sleep Patterns = Poor    -0.039362    0.961402
+29     Physical Activity Level = Active    -0.036269    0.964381
+30              Marital Status = Single    -0.024253    0.976039
+31             Smoking Status = Current    -0.022443    0.977807
+32             Marital Status = Married    -0.020764    0.979450
+33                                  Age     0.007004    1.007029
+34                   Number of Children    -0.000559    0.999441
+
+Interaction-aware logistic regression (C = 99.49): the cross terms (largest first).
+                                                                    term  coefficient  odds_ratio
+1              Smoking Status x Employment Status = Current | Unemployed    -0.194212    0.823484
+2             Smoking Status x Employment Status = Non-smoker | Employed    -0.190535    0.826517
+3                 Smoking Status x Employment Status = Former | Employed    -0.185845    0.830403
+4       Education Level x Employment Status = Master's Degree | Employed    -0.169933    0.843721
+5     Education Level x Employment Status = Bachelor's Degree | Employed    -0.165368    0.847582
+6                   Education Level x Employment Status = PhD | Employed    -0.159918    0.852213
+7               Education Level x Smoking Status = High School | Current    -0.154407    0.856923
+8           Smoking Status x Employment Status = Non-smoker | Unemployed     0.151240    1.163276
+9               Smoking Status x Employment Status = Former | Unemployed     0.148761    1.160395
+10               Smoking Status x Employment Status = Current | Employed     0.123551    1.131508
+11         Education Level x Smoking Status = Associate Degree | Current    -0.122986    0.884276
+12     Education Level x Employment Status = Associate Degree | Employed     0.122451    1.130264
+13          Education Level x Employment Status = High School | Employed     0.119940    1.127429
+14    Education Level x Employment Status = Master's Degree | Unemployed     0.117719    1.124928
+16  Education Level x Employment Status = Bachelor's Degree | Unemployed     0.103649    1.109211
+17        Education Level x Employment Status = High School | Unemployed    -0.102249    0.902805
+18          Education Level x Smoking Status = Master's Degree | Current     0.098773    1.103816
+19   Education Level x Employment Status = Associate Degree | Unemployed    -0.096815    0.907724
+20               Education Level x Smoking Status = High School | Former     0.089562    1.093695
+21           Education Level x Smoking Status = Master's Degree | Former    -0.089080    0.914773
+                                model          hyper-parameter                         range searched    chosen
+0                   Gradient boosting            learning_rate                0.01 to 0.3 (log scale)   0.03575
+1                   Gradient boosting                max_depth                                 2 to 8         8
+2                   Gradient boosting           max_leaf_nodes                                8 to 64        49
+3                   Gradient boosting         min_samples_leaf                              20 to 500       307
+4                   Gradient boosting        l2_regularization                0.001 to 10 (log scale)  0.004208
+5                   Gradient boosting          number of trees  early stopping (max 500, patience 20)        78
+6      Logistic regression (additive)  C (inverse L2 strength)               0.001 to 100 (log scale)   0.05307
+7  Logistic regression + interactions  C (inverse L2 strength)               0.001 to 100 (log scale)     99.49
+Fixed settings: logistic regression uses the L2 penalty, lbfgs solver, max_iter 2000; gradient boosting uses early stopping on a 10% internal validation split.
+Search: 25 + 12 Bayesian trials, 5-fold CV, 100,000 training rows.
+          set    rows  share_of_data  with_history  positive_rate
+0       Train  248260       0.599998         75495       0.304097
+1  Validation   82754       0.200001         25165       0.304094
+2        Test   82754       0.200001         25165       0.304094
+Overall rate 30.41% -> spread across sets 0.00 percentage points (stratified on the target).
+                         feature      type  largest_gap                              unit
+13                    Log Income   numeric     1.399713  % of a standard deviation (mean)
+11                           Age   numeric     0.767434  % of a standard deviation (mean)
+2                 Smoking Status  category     0.577696          points of category share
+9   Family History of Depression  category     0.466443          points of category share
+5            Alcohol Consumption  category     0.444422          points of category share
+7                 Sleep Patterns  category     0.437272          points of category share
+4              Employment Status  category     0.384964          points of category share
+3        Physical Activity Level  category     0.367699          points of category share
+8     History of Substance Abuse  category     0.345352          points of category share
+1                Education Level  category     0.317649          points of category share
+12            Number of Children   numeric     0.287311  % of a standard deviation (mean)
+6                 Dietary Habits  category     0.198178          points of category share
+10    Chronic Medical Conditions  category     0.140037          points of category share
+0                 Marital Status  category     0.114798          points of category share
+Largest feature difference between any two sets: 1.40 (% of a standard deviation (mean)) for Log Income.
+logistic_additive -> {'penalty': 'deprecated', 'C': 0.05306527555983122, 'solver': 'lbfgs', 'max_iter': 2000, 'tol': 0.0001, 'class_weight': None, 'fit_intercept': True}
+logistic_interactions -> {'penalty': 'deprecated', 'C': 99.49208134020634, 'solver': 'lbfgs', 'max_iter': 2000, 'tol': 0.0001, 'class_weight': None, 'fit_intercept': True, 'interaction_pairs': ['Education Level x Employment Status', 'Smoking Status x Employment Status', 'Education Level x Smoking Status']}
+gradient_boosting -> {'learning_rate': 0.03574712922600244, 'max_depth': 8, 'max_leaf_nodes': 49, 'min_samples_leaf': 307, 'l2_regularization': 0.004207988669606638, 'max_iter': 500, 'early_stopping': True, 'validation_fraction': 0.1, 'n_iter_no_change': 20, 'scoring': 'loss', 'loss': 'log_loss', 'max_bins': 255, 'random_state': 42, 'trees_actually_built': 78}
+preprocessing -> {'logistic': 'numeric: median impute + standardise; categories: most-frequent impute + one-hot (all levels)', 'gradient_boosting': 'numeric: median impute; categories: ordinal codes treated natively as categorical'}
+FAIRNESS SCREEN: Logistic regression, test set, threshold 0.36 (top-30% rule); groups with n >= 100
+           attribute  groups  disparate_impact_ratio   TPR_gap   FPR_gap  max_abs_calib_gap  AUC_range                             flags
+0           Age Band       6                0.393397  0.304934  0.236855           0.004138   0.045741  DI<0.8, TPR gap>5pp, FPR gap>5pp
+1     Marital Status       4                0.597237  0.189304  0.131958           0.007368   0.031555  DI<0.8, TPR gap>5pp, FPR gap>5pp
+2    Education Level       5                0.634546  0.112649  0.136821           0.007155   0.076194  DI<0.8, TPR gap>5pp, FPR gap>5pp
+3  Employment Status       2                0.000000  0.854325  0.858617           0.004524   0.072113  DI<0.8, TPR gap>5pp, FPR gap>5pp
+4    Income Quartile       4                0.000000  0.919266  0.920445           0.016717   0.055190  DI<0.8, TPR gap>5pp, FPR gap>5pp
+
+--- Age Band ---
+   group      n     share  base_rate  selection_rate       TPR       FPR  precision       AUC  mean_pred  calib_gap
+0  25-34  13032  0.157479   0.287753        0.176642  0.230400  0.154924   0.375326  0.575788   0.283615  -0.004138
+1  35-44  13438  0.162385   0.280101        0.169743  0.228480  0.146889   0.377028  0.581685   0.280591   0.000489
+2  45-54  13213  0.159666   0.311057        0.331340  0.416545  0.292870   0.391046  0.594445   0.307182  -0.003875
+3  55-64  13165  0.159086   0.313027        0.374858  0.472215  0.330495   0.394326  0.600182   0.313668   0.000641
+4    65+  20738  0.250598   0.318931        0.431478  0.533414  0.383744   0.394278  0.602756   0.321361   0.002430
+5    <25   9168  0.110786   0.306065        0.273015  0.312901  0.255423   0.350779  0.557015   0.307860   0.001795
+
+--- Marital Status ---
+      group      n     share  base_rate  selection_rate       TPR       FPR  precision       AUC  mean_pred  calib_gap
+0  Divorced   6538  0.079005   0.298103        0.230346  0.289379  0.205273   0.374502  0.588378   0.290736  -0.007368
+1   Married  48021  0.580286   0.305387        0.322234  0.414388  0.281718   0.392723  0.596709   0.305174  -0.000213
+2    Single  14453  0.174650   0.297170        0.223345  0.273807  0.202008   0.364312  0.568125   0.295751  -0.001419
+3   Widowed  13742  0.166058   0.309707        0.373963  0.463111  0.333966   0.383538  0.599680   0.313757   0.004049
+
+--- Education Level ---
+               group      n     share  base_rate  selection_rate       TPR       FPR  precision       AUC  mean_pred  calib_gap
+0   Associate Degree  16034  0.193755   0.334851        0.361607  0.425778  0.329301   0.394274  0.547912   0.333345  -0.001505
+1  Bachelor's Degree  24837  0.300131   0.281475        0.229456  0.323845  0.192480   0.397263  0.610488   0.276734  -0.004741
+2        High School  23789  0.287466   0.329522        0.346757  0.396224  0.322445   0.376530  0.534294   0.329567   0.000045
+3    Master's Degree  14694  0.177562   0.274874        0.312509  0.436494  0.265509   0.383929  0.607803   0.281219   0.006345
+4                PhD   3400  0.041086   0.272647        0.296765  0.398058  0.258795   0.365709  0.594712   0.279802   0.007155
+
+--- Employment Status ---
+        group      n     share  base_rate  selection_rate       TPR       FPR  precision       AUC  mean_pred  calib_gap
+0    Employed  53176  0.642579   0.257785        0.000000  0.000000  0.000000        NaN  0.563353   0.254832  -0.002954
+1  Unemployed  29578  0.357421   0.387349        0.856954  0.854325  0.858617    0.38616  0.491240   0.391873   0.004524
+
+--- Income Quartile ---
+          group      n     share  base_rate  selection_rate       TPR       FPR  precision       AUC  mean_pred  calib_gap
+0   Q1 (lowest)  20697  0.250103   0.387206        0.919988  0.919266  0.920445   0.386902  0.491101   0.395642   0.008437
+1            Q2  20683  0.249934   0.338152        0.304888  0.346154  0.283805   0.383920  0.546291   0.325996  -0.012156
+2            Q3  20688  0.249994   0.278761        0.000000  0.000000  0.000000        NaN  0.544147   0.264633  -0.014127
+3  Q4 (highest)  20686  0.249970   0.212221        0.000000  0.000000  0.000000        NaN  0.528226   0.228938   0.016717
+                               roc_auc    pr_auc    recall  precision        f1  worst disparate-impact ratio  largest TPR gap  largest FPR gap
+Full model                    0.592703  0.362230  0.388953   0.386160  0.387551                           0.0         0.919266         0.920445
+Without Age & Marital Status  0.592746  0.362214  0.388834   0.386042  0.387433                           0.0         0.917769         0.921785
+Proxy test: predicting 'age >= 45' from the remaining variables gives AUC 0.838 (0.5 = no proxy information).
+==============================================================================================================
+BIAS TAKEAWAYS (generated from the data)
+==============================================================================================================
+1. Representation: no group in the audit has fewer than 500 test rows.
+2. Age Band: flags raised -> DI<0.8, TPR gap>5pp, FPR gap>5pp (DI ratio 0.39, TPR gap 0.305, FPR gap 0.237,
+max calibration gap 0.004).
+2. Marital Status: flags raised -> DI<0.8, TPR gap>5pp, FPR gap>5pp (DI ratio 0.60, TPR gap 0.189, FPR gap
+0.132, max calibration gap 0.007).
+2. Education Level: flags raised -> DI<0.8, TPR gap>5pp, FPR gap>5pp (DI ratio 0.63, TPR gap 0.113, FPR gap
+0.137, max calibration gap 0.007).
+2. Employment Status: flags raised -> DI<0.8, TPR gap>5pp, FPR gap>5pp (DI ratio 0.00, TPR gap 0.854, FPR gap
+0.859, max calibration gap 0.005).
+2. Income Quartile: flags raised -> DI<0.8, TPR gap>5pp, FPR gap>5pp (DI ratio 0.00, TPR gap 0.919, FPR gap
+0.920, max calibration gap 0.017).
+   Caution: because the model's scores carry little signal, who lands above the threshold is decided by tiny
+score differences, so selection-rate and error-rate gaps between groups are unstable and easy to over-read.
+Per-group AUC and calibration are more reliable here.
+3. Removing Age and Marital Status changes ROC-AUC from 0.593 to 0.593. A proxy test finds the remaining
+variables predict 'age >= 45' with AUC 0.838, so age-related information leaks through other variables;
+removing the column alone does not remove age-related effects.
+4. Label bias cannot be measured from this data: if some groups are less likely to be diagnosed or to disclose
+a history of mental illness, the model learns those reporting patterns, not true prevalence.
+5. Synthetic data: group differences here reflect how the dataset was generated and should not be read as
+real-world differences between groups.
+FAIRNESS SCREEN: interaction-aware logistic regression, test set, threshold 0.39 (top-30% rule)
+           attribute  groups  disparate_impact_ratio   TPR_gap   FPR_gap  max_abs_calib_gap  AUC_range                             flags
+0           Age Band       6                0.323261  0.363704  0.290173           0.004355   0.041092  DI<0.8, TPR gap>5pp, FPR gap>5pp
+1     Marital Status       4                0.438470  0.258490  0.204002           0.006883   0.024458  DI<0.8, TPR gap>5pp, FPR gap>5pp
+2    Education Level       5                0.755621  0.116655  0.084373           0.007146   0.075899  DI<0.8, TPR gap>5pp, FPR gap>5pp
+3  Employment Status       2                0.000000  0.881295  0.845759           0.004599   0.048305  DI<0.8, TPR gap>5pp, FPR gap>5pp
+4    Income Quartile       4                0.000000  0.871974  0.834266           0.006930   0.032245  DI<0.8, TPR gap>5pp, FPR gap>5pp
+   group      n  base_rate  selection_rate       TPR       FPR       AUC  mean_pred  calib_gap
+0  25-34  13032   0.287753        0.150859  0.212800  0.125835  0.580544   0.285075  -0.002678
+1  35-44  13438   0.280101        0.151064  0.217853  0.125078  0.584458   0.280953   0.000852
+2  45-54  13213   0.311057        0.335276  0.437226  0.289245  0.600372   0.306702  -0.004355
+3  55-64  13165   0.313027        0.414280  0.523417  0.364551  0.600784   0.314039   0.001012
+4    65+  20738   0.318931        0.466680  0.576504  0.415251  0.604070   0.321602   0.002670
+5    <25   9168   0.306065        0.203425  0.253742  0.181232  0.562979   0.306352   0.000288
+        group      n  base_rate  selection_rate       TPR       FPR       AUC  mean_pred  calib_gap
+0    Employed  53176   0.257785        0.000000  0.000000  0.000000  0.564462   0.255046  -0.002740
+1  Unemployed  29578   0.387349        0.859524  0.881295  0.845759  0.516158   0.391947   0.004599
+==============================================================================================================
+ANSWER SUMMARY (generated from this run; edit the wording before presenting)
+==============================================================================================================
+Q1 Insights: 30.4% of 413,768 people have a history of mental illness. The strongest univariate associations
+are Log Income (weak, 0.19); Employment Status (weak, 0.14); Education Level (very weak, 0.06). Effect sizes
+are used instead of p-values because with this many rows almost everything is 'significant'.
+Q2 Model: Logistic regression was chosen on validation data over Gradient boosting (HGB) and a majority
+baseline. On unseen test data it reaches ROC-AUC 0.593 (95% CI 0.589 to 0.597) and PR-AUC 0.362 against a
+prevalence of 0.304; the top decile has 1.24x the average rate. Performance is poor, so the model is useful
+for ranking groups at best and not for individual decisions.
+Q2 Bias: 5 of 5 audited attributes raised at least one screening flag; the proxy test for age gives AUC 0.838.
+Label bias cannot be measured from this data.
+Q3 Limitations: synthetic and cross-sectional data, coarse features, no timing, a recorded-history label,
+single random split, and ethical/regulatory constraints on using health data. Improvements: longitudinal and
+clinical data, external validation, calibrated probabilities, costs-based thresholds, fairness constraints and
+governance (Section 8).
+==============================================================================================================
+HEADLINE NUMBERS FOR THE PRESENTATION
+==============================================================================================================
+                                                       Item                                                                                                 Value
+0                                             Rows analysed                                                                                               413,768
+1                 Positive rate (history of mental illness)                                                                                                 30.4%
+2                         Strongest predictor (effect size)                                                                              Log Income (0.186, weak)
+3                                               Final model  Logistic regression (chosen on validation data over Gradient boosting (HGB) and a majority baseline)
+4                                     Test ROC-AUC (95% CI)                                                                                  0.593 [0.589, 0.597]
+5                                 Test PR-AUC vs prevalence                                                                                        0.362 vs 0.304
+6  Recall / precision at operating threshold (top-30% rule)                                                                                             39% / 39%
+7                                           Top-decile lift                                                                                                 1.24x
+8            Worst disparate-impact ratio / largest TPR gap                                                                                          0.00 / 0.919
+
+Figures saved in ./figures and tables in ./outputs. In Colab, download them from the Files panel.
+RUNTIME 278.53418707847595

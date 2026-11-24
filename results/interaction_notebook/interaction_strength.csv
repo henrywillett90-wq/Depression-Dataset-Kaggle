@@ -1,0 +1,92 @@
+feature_a,feature_b,strength,h2,pair
+Education Level,Employment Status,0.07757200129307697,0.07840158886885251,Education Level  x  Employment Status
+Smoking Status,Employment Status,0.07003408961228737,0.08196875166314345,Smoking Status  x  Employment Status
+Education Level,Smoking Status,0.03679053593804096,0.0730349747698077,Education Level  x  Smoking Status
+Log Income,Smoking Status,0.030852320345069708,0.17540670570503222,Log Income  x  Smoking Status
+Log Income,Education Level,0.026889761195690507,0.023561855664754067,Log Income  x  Education Level
+Age,Education Level,0.02440704773117359,0.037670357620780505,Age  x  Education Level
+Log Income,Employment Status,0.020810076385362947,0.0052670744435565076,Log Income  x  Employment Status
+Age,Log Income,0.01780187750690414,0.06308082059530187,Age  x  Log Income
+Log Income,Dietary Habits,0.009041820752282069,0.017254660969357512,Log Income  x  Dietary Habits
+Log Income,Physical Activity Level,0.008372309551867095,0.014479002435158539,Log Income  x  Physical Activity Level
+Log Income,Sleep Patterns,0.00784435434721034,0.012335223007024283,Log Income  x  Sleep Patterns
+Age,Employment Status,0.007499889425414106,0.0010717768577595686,Age  x  Employment Status
+Marital Status,Smoking Status,0.00697799278470032,0.19300783532490562,Marital Status  x  Smoking Status
+Age,Sleep Patterns,0.006753981653183679,0.25840575946639216,Age  x  Sleep Patterns
+Log Income,Family History of Depression,0.006653061736862335,0.009752249646584596,Log Income  x  Family History of Depression
+Log Income,Alcohol Consumption,0.006330722377260764,0.00836788324800444,Log Income  x  Alcohol Consumption
+Physical Activity Level,Employment Status,0.006245546744819647,0.0007348295348361349,Physical Activity Level  x  Employment Status
+Age,Marital Status,0.005916682226587224,0.26475428499364584,Age  x  Marital Status
+Log Income,Marital Status,0.005814914010599709,0.007385977249999904,Log Income  x  Marital Status
+Employment Status,Alcohol Consumption,0.005689757431946264,0.0006084831512264414,Employment Status  x  Alcohol Consumption
+Employment Status,Dietary Habits,0.005524607345765054,0.0005752562578301196,Employment Status  x  Dietary Habits
+Marital Status,Education Level,0.005468090116844738,0.0017719053801257126,Marital Status  x  Education Level
+Number of Children,Smoking Status,0.00542566929004734,0.19386279437025766,Number of Children  x  Smoking Status
+Marital Status,Employment Status,0.005104741613430269,0.000495768011287008,Marital Status  x  Employment Status
+Education Level,Dietary Habits,0.0050373644236931,0.001609847490439281,Education Level  x  Dietary Habits
+Employment Status,Sleep Patterns,0.004710607014118759,0.0004210133853446572,Employment Status  x  Sleep Patterns
+Age,Smoking Status,0.0044750289247060945,0.0659106612111947,Age  x  Smoking Status
+Education Level,Alcohol Consumption,0.004392216496602148,0.0011926871956879754,Education Level  x  Alcohol Consumption
+Number of Children,Log Income,0.004138553620683761,0.003759208138548784,Number of Children  x  Log Income
+Education Level,Physical Activity Level,0.0037604276939124798,0.0008719053419363941,Education Level  x  Physical Activity Level
+Age,Alcohol Consumption,0.003733266243737865,0.09467990081898082,Age  x  Alcohol Consumption
+Number of Children,Education Level,0.0035470802355365015,0.0007691890568890443,Number of Children  x  Education Level
+Age,Dietary Habits,0.003198858229591458,0.07633712559713088,Age  x  Dietary Habits
+Employment Status,Family History of Depression,0.0030756392261627697,0.00017958800449595382,Employment Status  x  Family History of Depression
+Age,Number of Children,0.002951631037366585,0.06991306343587117,Age  x  Number of Children
+Age,Physical Activity Level,0.0025830152491322666,0.04832942119428472,Age  x  Physical Activity Level
+Smoking Status,Sleep Patterns,0.0022915588300180902,0.03281109134138878,Smoking Status  x  Sleep Patterns
+Dietary Habits,Sleep Patterns,0.0021827665619875603,0.304444045236464,Dietary Habits  x  Sleep Patterns
+Alcohol Consumption,Sleep Patterns,0.002077693725206233,0.1933792113111831,Alcohol Consumption  x  Sleep Patterns
+Smoking Status,Dietary Habits,0.0018030347576590622,0.01920606895429095,Smoking Status  x  Dietary Habits
+Smoking Status,Physical Activity Level,0.001792451100216167,0.017807266886510246,Smoking Status  x  Physical Activity Level
+Education Level,Chronic Medical Conditions,0.001751533799184968,0.00018768258266111003,Education Level  x  Chronic Medical Conditions
+Dietary Habits,Family History of Depression,0.0017325305941524064,0.15433834242604988,Dietary Habits  x  Family History of Depression
+Age,Chronic Medical Conditions,0.001699753196593121,0.022930584500091836,Age  x  Chronic Medical Conditions
+Log Income,Chronic Medical Conditions,0.001685033926251961,0.000610108403930956,Log Income  x  Chronic Medical Conditions
+Alcohol Consumption,Dietary Habits,0.0016715125013751961,0.15180138580631383,Alcohol Consumption  x  Dietary Habits
+Education Level,Sleep Patterns,0.0015669137223841105,0.0001500594326472693,Education Level  x  Sleep Patterns
+Education Level,Family History of Depression,0.0015427447701916077,0.00014696480259945144,Education Level  x  Family History of Depression
+Age,History of Substance Abuse,0.001507998601913559,0.017384630267199084,Age  x  History of Substance Abuse
+Log Income,History of Substance Abuse,0.0014096010270660789,0.0004348852453145391,Log Income  x  History of Substance Abuse
+Age,Family History of Depression,0.001395826146198093,0.014455774130460753,Age  x  Family History of Depression
+Smoking Status,History of Substance Abuse,0.001391521742243146,0.012028699191578195,Smoking Status  x  History of Substance Abuse
+Smoking Status,Alcohol Consumption,0.0013185671917164547,0.00924769734980111,Smoking Status  x  Alcohol Consumption
+Alcohol Consumption,History of Substance Abuse,0.001237510853270612,0.12134488889043321,Alcohol Consumption  x  History of Substance Abuse
+Employment Status,Chronic Medical Conditions,0.0012205700504362618,2.812604452181249e-05,Employment Status  x  Chronic Medical Conditions
+Physical Activity Level,Family History of Depression,0.001163637788256359,0.037962074497587435,Physical Activity Level  x  Family History of Depression
+Marital Status,Physical Activity Level,0.0011473401384697905,0.027876540009141238,Marital Status  x  Physical Activity Level
+Number of Children,Sleep Patterns,0.00113622829801634,0.07263274061809484,Number of Children  x  Sleep Patterns
+Alcohol Consumption,Chronic Medical Conditions,0.0010649009547482637,0.11408334319852177,Alcohol Consumption  x  Chronic Medical Conditions
+Number of Children,Employment Status,0.0009826220526659136,1.8306882037602347e-05,Number of Children  x  Employment Status
+Marital Status,Dietary Habits,0.0009674601941323145,0.034596393317316086,Marital Status  x  Dietary Habits
+Physical Activity Level,Sleep Patterns,0.0009154389236283056,0.01648351310950783,Physical Activity Level  x  Sleep Patterns
+Sleep Patterns,History of Substance Abuse,0.000875806687011095,0.0575013994969849,Sleep Patterns  x  History of Substance Abuse
+Number of Children,Dietary Habits,0.0008468553316598888,0.046316311484998214,Number of Children  x  Dietary Habits
+Number of Children,Alcohol Consumption,0.0007608579720824745,0.03633525392578061,Number of Children  x  Alcohol Consumption
+Marital Status,Alcohol Consumption,0.0007310494142340238,0.02005058252966843,Marital Status  x  Alcohol Consumption
+Number of Children,History of Substance Abuse,0.0007209268238751676,0.05533410132307322,Number of Children  x  History of Substance Abuse
+Physical Activity Level,Alcohol Consumption,0.0007029693929411232,0.011597021230725172,Physical Activity Level  x  Alcohol Consumption
+Number of Children,Physical Activity Level,0.0006907993973740179,0.011531646219945547,Number of Children  x  Physical Activity Level
+Marital Status,Family History of Depression,0.0006349641867720386,0.011564838332831357,Marital Status  x  Family History of Depression
+Dietary Habits,Chronic Medical Conditions,0.000630361042347766,0.05460773438368741,Dietary Habits  x  Chronic Medical Conditions
+Smoking Status,Chronic Medical Conditions,0.0005486004799448302,0.001821759690360572,Smoking Status  x  Chronic Medical Conditions
+Physical Activity Level,Dietary Habits,0.0005409027147453809,0.008609691992809572,Physical Activity Level  x  Dietary Habits
+Number of Children,Family History of Depression,0.0005407911727607421,0.017775976687652344,Number of Children  x  Family History of Depression
+Marital Status,Sleep Patterns,0.0005101093959727326,0.009977351039357941,Marital Status  x  Sleep Patterns
+Marital Status,Chronic Medical Conditions,0.00043205703811424257,0.00909887738758935,Marital Status  x  Chronic Medical Conditions
+Physical Activity Level,History of Substance Abuse,0.0004299903261013643,0.005983834227582721,Physical Activity Level  x  History of Substance Abuse
+Alcohol Consumption,Family History of Depression,0.00041804006866722534,0.01091020694962397,Alcohol Consumption  x  Family History of Depression
+Sleep Patterns,Chronic Medical Conditions,0.00036180753705164677,0.012424817353282094,Sleep Patterns  x  Chronic Medical Conditions
+Education Level,History of Substance Abuse,0.0003403909766312827,7.115473080146997e-06,Education Level  x  History of Substance Abuse
+Number of Children,Marital Status,0.00031613709845995175,0.00393755883505082,Number of Children  x  Marital Status
+Physical Activity Level,Chronic Medical Conditions,0.00031280746693901606,0.0033053070737155948,Physical Activity Level  x  Chronic Medical Conditions
+Sleep Patterns,Family History of Depression,0.0003105180216427222,0.004921459238320102,Sleep Patterns  x  Family History of Depression
+Smoking Status,Family History of Depression,0.0002870008255926425,0.000492811124363695,Smoking Status  x  Family History of Depression
+Employment Status,History of Substance Abuse,0.00028444110659053915,1.5275669741257167e-06,Employment Status  x  History of Substance Abuse
+Marital Status,History of Substance Abuse,0.00025147009228984005,0.0033391781032744454,Marital Status  x  History of Substance Abuse
+Dietary Habits,History of Substance Abuse,0.0002083076485665944,0.0058130402120252075,Dietary Habits  x  History of Substance Abuse
+History of Substance Abuse,Family History of Depression,0.000204565773157865,0.003515460000331282,History of Substance Abuse  x  Family History of Depression
+Number of Children,Chronic Medical Conditions,0.00020190005848707337,0.004782266429441568,Number of Children  x  Chronic Medical Conditions
+History of Substance Abuse,Chronic Medical Conditions,2.9435930678025774e-05,0.00041418470355184493,History of Substance Abuse  x  Chronic Medical Conditions
+Family History of Depression,Chronic Medical Conditions,2.6550193986000116e-05,7.007043400610746e-05,Family History of Depression  x  Chronic Medical Conditions

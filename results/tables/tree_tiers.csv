@@ -1,0 +1,6 @@
+rate,n,share_of_people,rule
+0.3999411707030101,81592,0.32865544187545315,Employment Status_Unemployed > 0.5 AND Smoking Status (rank) <= 1.5
+0.30682571239231277,7545,0.030391525014098125,Employment Status_Unemployed > 0.5 AND Smoking Status (rank) > 1.5
+0.2992733878292461,77070,0.31044066704261664,Employment Status_Unemployed <= 0.5 AND Education Level (rank) <= 1.5
+0.295561850802644,10590,0.042656891968097965,Employment Status_Unemployed <= 0.5 AND Education Level (rank) > 1.5 AND Smoking Status (rank) > 1.5
+0.20084519261715852,71463,0.28785547409973417,Employment Status_Unemployed <= 0.5 AND Education Level (rank) > 1.5 AND Smoking Status (rank) <= 1.5

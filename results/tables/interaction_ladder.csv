@@ -1,0 +1,6 @@
+model,val_auc
+Additive only (depth 1),0.5952569851910416
+Up to 2-way interactions (depth 2),0.599238650425951
+Up to 3-way interactions (depth 3),0.5992983180894444
+Tuned model (Section 5.2),0.5982674234750848
+Logistic regression (additive),0.5965269634381031
